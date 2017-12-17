@@ -1,6 +1,7 @@
 package com.intuit.galah.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -38,6 +39,11 @@ public class UserCacheController {
 	@GetMapping(value="/user/{userId}/posts", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<Set<Post>> getUserPosts(@PathVariable  String userId) {
 		return new ResponseEntity<Set<Post>>(postService.getUserPosts(userId),HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/user", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<List<User>> getAllUser() {
+		return new ResponseEntity<List<User>>(userService.getAllUsers(),HttpStatus.OK);
 	}
 		
 	@PutMapping(value="/user/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })

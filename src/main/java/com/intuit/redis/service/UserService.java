@@ -1,6 +1,7 @@
 package com.intuit.redis.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -120,6 +121,14 @@ public class UserService {
 	
 	private Long createNewUserId() {
 		return idOps.increment(Constants.USER_ID_KEY, 1);
+	}
+
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+			List<Object> objects = userHashOps.values(Constants.USER_KEY);
+			List<User> users = new ArrayList<User>();
+			objects.forEach(o -> users.add((User)o));
+			return users;
 	}
 
 }
