@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
 //import com.intuit.galah.listener.PostEventListener;
 //import com.intuit.galah.listener.UserEventListener;
 import com.intuit.redis.service.PostService;
@@ -18,15 +19,15 @@ public class GalahEventConsumerApplication {
 		SpringApplication.run(GalahEventConsumerApplication.class, args);
 	}
 
-/*	@Bean
-	public UserEventListener userEventListener() {
-		return new UserEventListener();
-	}
-	
-	@Bean
-	public PostEventListener postEventListener() {
-		return new PostEventListener();
-	}*/
+//	@Bean
+//	public UserEventListener userEventListener() {
+//		return new UserEventListener();
+//	}
+//	
+//	@Bean
+//	public PostEventListener postEventListener() {
+//		return new PostEventListener();
+//	}
 	
 	@Bean
 	public UserService userService() {

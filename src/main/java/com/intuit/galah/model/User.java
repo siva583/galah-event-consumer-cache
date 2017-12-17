@@ -7,6 +7,7 @@ public class User implements Serializable{
 	
 	private String userId;
 	private String email;
+	private String userName;
 	private String firstName;
 	private String lastName;
 	private String middleName;
@@ -18,11 +19,12 @@ public class User implements Serializable{
 		super();
 	}
 
-	public User(String userId, String email, String firstName, String lastName, String middleName, Date createdAt,
+	public User(String userId, String email, String userName, String firstName, String lastName, String middleName, Date createdAt,
 			Date updatedAt) {
 		super();
 		this.userId = userId;
 		this.email = email;
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -72,13 +74,18 @@ public class User implements Serializable{
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", middleName=" + middleName + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+		return "User [userId=" + userId + ", email=" + email + ", userName=" + userName + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", middleName=" + middleName + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
-	
-	
 
 }

@@ -2,6 +2,7 @@ package com.intuit.redis.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,9 +59,9 @@ public class PostService {
 		return (Post) postHashOps.get(Constants.POST_KEY, id);
 	}
 
-	public Set<Post> getUserPosts(String userId) {
+	public LinkedHashSet<Post> getUserPosts(String userId) {
 		List<String> postIds = postListOps.range(Constants.POSTS_KEY+userId, 0, -1);
-		Set<Post> userPosts = new HashSet<Post>();
+		LinkedHashSet<Post> userPosts = new LinkedHashSet<Post>();
 		for(String postId : postIds) {
 			userPosts.add((Post) postHashOps.get(Constants.POST_KEY, postId));
 		}
@@ -69,6 +70,13 @@ public class PostService {
 	
 	private Long createNewPostId() {
 		return idOps.increment(Constants.POST_ID_KEY, 1);
+	}
+
+	public LinkedHashSet<Post> getAllPosts() {
+		List<Object> objects = postHashOps.values(Constants.POST_KEY);
+		LinkedHashSet<Post> posts = new LinkedHashSet<Post>();
+		objects.forEach(o -> posts.add((Post)o));
+		return posts;
 	}
 
 }

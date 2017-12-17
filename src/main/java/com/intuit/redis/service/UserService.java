@@ -1,9 +1,7 @@
 package com.intuit.redis.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,10 +13,8 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intuit.galah.constants.Constants;
 import com.intuit.galah.model.Post;
 import com.intuit.galah.model.User;
@@ -43,9 +39,14 @@ public class UserService {
 	
 	
 
-	public User upsertUser(User user) {
+	public User createUser(User user) {
 		user.setUserId(String.valueOf(createNewUserId()));
 		System.out.println("id::"+user.getUserId());
+		userHashOps.put(Constants.USER_KEY, user.getUserId(), user);
+		return user;
+	}
+	
+	public User updateUser(User user) {
 		userHashOps.put(Constants.USER_KEY, user.getUserId(), user);
 		return user;
 	}
@@ -56,6 +57,9 @@ public class UserService {
 
 	public boolean deleteUser(String userId) {
 		//clean up following, follower, posts in redis
+		userFollowOps.remove(Constants.FOLLOWER+userId);
+		userFollowOps.remove(Constants.FOLLOWING + userId);
+		userFollowOps.remove(Constants.FOLLOW_REQ+userId);
 		userHashOps.delete(Constants.USER_KEY, userId);
 		return true;
 	}
@@ -76,9 +80,9 @@ public class UserService {
 		userFollowOps.remove(Constants.FOLLOWING+ userId, wantToUnFolllow);
 	}
 	
-	public Set<User> getFollowersForUser(String userId) {
+	public LinkedHashSet<User> getFollowersForUser(String userId) {
 		Set<String> followerIds = userFollowOps.range(Constants.FOLLOWER+userId, 0, -1);
-		Set<User> followers = new HashSet<User>();
+		LinkedHashSet<User> followers = new LinkedHashSet<User>();
 		for(String followerId:followerIds) {
 			followers.add((User) userHashOps.get(Constants.USER_KEY, followerId));
 		}
@@ -86,9 +90,9 @@ public class UserService {
 		return followers;
 	}
 	
-	public Set<User> getFollowingForUser(String userId){
+	public LinkedHashSet<User> getFollowingForUser(String userId){
 		Set<String> followingIds = userFollowOps.range(Constants.FOLLOWING+userId, 0, -1);
-		Set<User> following = new HashSet<User>();
+		LinkedHashSet<User> following = new LinkedHashSet<User>();
 		for(String followingId:followingIds) {
 			following.add((User) userHashOps.get(Constants.USER_KEY, followingId));
 		}
@@ -96,9 +100,9 @@ public class UserService {
 		return following;
 	}
 	
-	public Set<User> getFollowingReqsForUser(String userId){
+	public LinkedHashSet<User> getFollowingReqsForUser(String userId){
 		Set<String> requestorIds = userFollowOps.range(Constants.FOLLOW_REQ+userId, 0, -1);
-		Set<User> requestors = new HashSet<User>();
+		LinkedHashSet<User> requestors = new LinkedHashSet<User>();
 		for(String reqId:requestorIds) {
 			requestors.add((User) userHashOps.get(Constants.USER_KEY, reqId));
 		}
@@ -110,9 +114,9 @@ public class UserService {
 		return userFollowOps.range(Constants.FOLLOWER+userId, 0, -1);
 	}
 
-	public Set<Post> getUserTimeline(String userId) {
+	public LinkedHashSet<Post> getUserTimeline(String userId) {
 		List<String> postIds = userListOps.range(Constants.TIMELINE_KEY+userId, 0, -1);
-		Set<Post> timelinePosts = new HashSet<Post>();
+		LinkedHashSet<Post> timelinePosts = new LinkedHashSet<Post>();
 		for(String postId : postIds) {
 			timelinePosts.add((Post) userHashOps.get(Constants.POST_KEY, postId));
 		}
@@ -123,10 +127,9 @@ public class UserService {
 		return idOps.increment(Constants.USER_ID_KEY, 1);
 	}
 
-	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
+	public LinkedHashSet<User> getAllUsers() {
 			List<Object> objects = userHashOps.values(Constants.USER_KEY);
-			List<User> users = new ArrayList<User>();
+			LinkedHashSet<User> users = new LinkedHashSet<User>();
 			objects.forEach(o -> users.add((User)o));
 			return users;
 	}

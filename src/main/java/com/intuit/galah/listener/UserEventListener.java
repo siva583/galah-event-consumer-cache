@@ -37,7 +37,7 @@ public class UserEventListener {
 	@KafkaListener(topics = "${user.create.topic.name}")
 	public void consumeUserCreateEvent(String payload) {
 		User user = unMarshalToUserObject(payload);
-		userService.upsertUser(user);
+		userService.createUser(user);
 		System.out.println("in service with redis::"+userService.getUser(user.getUserId()));
 		createLatch.countDown();
 	}
@@ -45,7 +45,7 @@ public class UserEventListener {
 	@KafkaListener(topics = "${user.update.topic.name}")
 	public void consumeUserUpdateEvent(String payload) {
 		User user = unMarshalToUserObject(payload);
-		userService.upsertUser(user);
+		userService.updateUser(user);
 		updateLatch.countDown();
 	}
 
