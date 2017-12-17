@@ -114,8 +114,10 @@ public class UserService {
 		return userFollowOps.range(Constants.FOLLOWER+userId, 0, -1);
 	}
 
-	public LinkedHashSet<Post> getUserTimeline(String userId) {
-		List<String> postIds = userListOps.range(Constants.TIMELINE_KEY+userId, 0, -1);
+	public LinkedHashSet<Post> getUserTimeline(String userId, Integer pageSize, Integer pageNumber) {
+		long start = (pageNumber<=0) ? pageNumber=1: (pageNumber-1)*pageSize+1;
+		long end = start+pageSize-1;	
+		List<String> postIds = userListOps.range(Constants.TIMELINE_KEY+userId, start, end);
 		LinkedHashSet<Post> timelinePosts = new LinkedHashSet<Post>();
 		for(String postId : postIds) {
 			timelinePosts.add((Post) userHashOps.get(Constants.POST_KEY, postId));

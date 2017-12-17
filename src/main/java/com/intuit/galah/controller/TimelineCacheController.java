@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intuit.galah.model.Post;
@@ -26,8 +27,8 @@ public class TimelineCacheController {
 	private ServiceUtil serviceUtil;
 	
 	@GetMapping(value="/feed/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getUserFeed(@PathVariable @Valid String userId) {
-		LinkedHashSet<Post> posts = userService.getUserTimeline(userId);
+	public ResponseEntity<?> getUserFeed(@PathVariable @Valid String userId, @RequestParam Integer pageSize, @RequestParam Integer pageNumber) {
+		LinkedHashSet<Post> posts = userService.getUserTimeline(userId,pageSize,pageNumber);
 		if(serviceUtil.areValidPosts(posts))
 			return serviceUtil.createResponseEntity(posts,HttpStatus.OK);
 		else
