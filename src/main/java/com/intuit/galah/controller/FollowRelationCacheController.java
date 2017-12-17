@@ -22,7 +22,6 @@ import com.intuit.redis.service.PostService;
 import com.intuit.redis.service.UserService;
 
 @RestController
-@SuppressWarnings("rawtypes")
 public class FollowRelationCacheController {
 	
 	@Autowired
@@ -53,7 +52,7 @@ public class FollowRelationCacheController {
 	}
 	
 	@GetMapping(value="/following/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUserFollowing(@PathVariable @Valid String userId) {
+	public ResponseEntity<?> getUserFollowing(@PathVariable @Valid String userId) {
 		LinkedHashSet<User> users = userService.getFollowingForUser(userId);
 		if(serviceUtil.areValidUsers(users))
 			return serviceUtil.createResponseEntity(users,HttpStatus.OK);
@@ -62,7 +61,7 @@ public class FollowRelationCacheController {
 	}
 	
 	@GetMapping(value="/followers/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUserFollowers(@PathVariable @Valid String userId) {
+	public ResponseEntity<?> getUserFollowers(@PathVariable @Valid String userId) {
 		LinkedHashSet<User> users =  userService.getFollowersForUser(userId);
 		if(serviceUtil.areValidUsers(users))
 			return serviceUtil.createResponseEntity(users,HttpStatus.OK);
@@ -71,7 +70,7 @@ public class FollowRelationCacheController {
 	}
 	
 	@GetMapping(value="/followerReqs/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUserFollowerReq(@PathVariable @Valid String userId) {
+	public ResponseEntity<?> getUserFollowerReq(@PathVariable @Valid String userId) {
 		LinkedHashSet<User> users =  userService.getFollowingReqsForUser(userId);
 		if(serviceUtil.areValidUsers(users))
 			return serviceUtil.createResponseEntity(users,HttpStatus.OK);

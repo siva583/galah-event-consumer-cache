@@ -17,7 +17,6 @@ import com.intuit.galah.util.ServiceUtil;
 import com.intuit.redis.service.UserService;
 
 @RestController
-@SuppressWarnings("rawtypes")
 public class TimelineCacheController {
 	
 	@Autowired
@@ -27,7 +26,7 @@ public class TimelineCacheController {
 	private ServiceUtil serviceUtil;
 	
 	@GetMapping(value="/feed/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUserFeed(@PathVariable @Valid String userId) {
+	public ResponseEntity<?> getUserFeed(@PathVariable @Valid String userId) {
 		LinkedHashSet<Post> posts = userService.getUserTimeline(userId);
 		if(serviceUtil.areValidPosts(posts))
 			return serviceUtil.createResponseEntity(posts,HttpStatus.OK);

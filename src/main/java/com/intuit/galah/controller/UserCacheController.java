@@ -21,7 +21,6 @@ import com.intuit.galah.util.ServiceUtil;
 import com.intuit.redis.service.UserService;
 
 @RestController
-@SuppressWarnings("rawtypes")
 public class UserCacheController {
 
 	@Autowired
@@ -31,7 +30,7 @@ public class UserCacheController {
 	private ServiceUtil serviceUtil;
 
 	@GetMapping(value="/user/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUser(@PathVariable  String userId) {
+	public ResponseEntity<?> getUser(@PathVariable  String userId) {
 		User user = userService.getUser(userId);
 		if(serviceUtil.isValidUser(user))
 			return serviceUtil.createResponseEntity(user,HttpStatus.OK);
@@ -40,7 +39,7 @@ public class UserCacheController {
 	}
 
 	@GetMapping(value="/user", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getAllUser() {
+	public ResponseEntity<?> getAllUsers() {
 		LinkedHashSet<User> users = userService.getAllUsers();
 		if(serviceUtil.areValidUsers(users))
 			return serviceUtil.createResponseEntity(users,HttpStatus.OK);
@@ -48,7 +47,7 @@ public class UserCacheController {
 			return serviceUtil.createResponseEntity("No users in system",HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping(value="/user/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(value="/user", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
 		return new ResponseEntity<User>(userService.createUser(user),HttpStatus.OK);
 	}

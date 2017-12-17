@@ -21,7 +21,6 @@ import com.intuit.redis.service.PostService;
 import com.intuit.redis.service.UserService;
 
 @RestController
-@SuppressWarnings("rawtypes")
 public class PostCacheController {
 	
 	@Autowired
@@ -34,7 +33,7 @@ public class PostCacheController {
 	private ServiceUtil serviceUtil;
 	
 	@GetMapping(value="/post/{postId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getPost(@PathVariable @Valid String postId) {
+	public ResponseEntity<?> getPost(@PathVariable @Valid String postId) {
 		System.out.println("PostId::"+postId);
 		Post post = postService.getPost(postId);
 		if(serviceUtil.isValidPost(post))
@@ -44,7 +43,7 @@ public class PostCacheController {
 	}
 	
 	@GetMapping(value="/posts/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getUserPosts(@PathVariable  String userId) {
+	public ResponseEntity<?> getUserPosts(@PathVariable  String userId) {
 		LinkedHashSet<Post> posts = postService.getUserPosts(userId);
 		if(serviceUtil.areValidPosts(posts))
 			return serviceUtil.createResponseEntity(postService.getUserPosts(userId),HttpStatus.OK);
@@ -53,7 +52,7 @@ public class PostCacheController {
 	}
 	
 	@GetMapping(value="/post", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity getAllPosts() {
+	public ResponseEntity<?> getAllPosts() {
 		LinkedHashSet<Post> posts = postService.getAllPosts();
 		if(serviceUtil.areValidPosts(posts))
 			return serviceUtil.createResponseEntity(posts, HttpStatus.OK);
