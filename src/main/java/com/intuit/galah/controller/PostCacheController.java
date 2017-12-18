@@ -34,7 +34,6 @@ public class PostCacheController {
 	
 	@GetMapping(value="/post/{postId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> getPost(@PathVariable @Valid String postId) {
-		System.out.println("PostId::"+postId);
 		Post post = postService.getPost(postId);
 		if(serviceUtil.isValidPost(post))
 			return serviceUtil.createResponseEntity(post,HttpStatus.OK);
