@@ -1,4 +1,4 @@
-/*package com.intuit.galah.listener;
+package com.intuit.galah.listener;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -10,8 +10,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intuit.galah.iface.IPostService;
 import com.intuit.galah.model.Post;
-import com.intuit.redis.service.PostService;
 
 @Service
 public class PostEventListener {
@@ -23,7 +23,7 @@ public class PostEventListener {
 	private CountDownLatch deleteLatch = new CountDownLatch(1);
 	
 	@Autowired
-	PostService postService;
+	IPostService postService;
 	
 	@KafkaListener(topics = "${post.create.topic.name}")
 	public void consumePostCreateEvent(String payload) {
@@ -60,4 +60,3 @@ public class PostEventListener {
 	
 
 }
-*/

@@ -4,6 +4,8 @@ import java.util.LinkedHashSet;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,14 +30,18 @@ public class UserCacheController {
 	
 	@Autowired
 	private ServiceUtil serviceUtil;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(UserCacheController.class);
 
 	@GetMapping(value="/user/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> getUser(@PathVariable  String userId) {
 		User user = userService.getUser(userId);
 		if(serviceUtil.isValidUser(user))
 			return serviceUtil.createResponseEntity(user,HttpStatus.OK);
-		else
+		else {
+			LOG.debug("User not found in system"+userId);
 			return serviceUtil.createResponseEntity("User not found in system",HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping(value="/user", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -43,8 +49,10 @@ public class UserCacheController {
 		LinkedHashSet<User> users = userService.getAllUsers();
 		if(serviceUtil.areValidUsers(users))
 			return serviceUtil.createResponseEntity(users,HttpStatus.OK);
-		else
+		else {
+			LOG.debug("No users in system");
 			return serviceUtil.createResponseEntity("No users in system",HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PostMapping(value="/user", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })

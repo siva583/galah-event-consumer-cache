@@ -1,0 +1,43 @@
+Configuration:
+  status: error
+  name: EventConsumerLogging
+  properties:
+    property:
+      name: logfile
+      value: /app/logs/app.log
+  appenders:
+    Console:
+      name: ConsoleAppender
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss:SSS} [%t] [%p] %logger{1.} - %msg%n"
+    RollingFile:
+      name: RollingFileAppender
+      fileName: ${logfile}
+      filePattern: "${logfile}.%d{yyyy-MM-dd}-%i"
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss:SSS} [%t] [%p] %logger{1.} - %msg%n"
+      Policies:
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+        SizeBasedTriggeringPolicy:
+          size: 10 MB
+      DefaultRollOverStrategy:
+          max: 7
+      Filters:
+        ThresholdFilter:
+          level: warn
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: ConsoleAppender
+        level: info
+    logger:
+      name: com.intuit.galah
+      additivity: false
+      AppenderRef:
+        ref: RollingFileAppender
+        level: warn

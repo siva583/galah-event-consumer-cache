@@ -1,4 +1,4 @@
-/*package com.intuit.galah.listener;
+package com.intuit.galah.listener;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -10,9 +10,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intuit.galah.iface.IUserService;
 import com.intuit.galah.model.Follow;
 import com.intuit.galah.model.User;
-import com.intuit.redis.service.UserService;
 
 @Service
 public class UserEventListener {
@@ -28,17 +28,13 @@ public class UserEventListener {
 
 
 	@Autowired
-	UserService userService;
+	IUserService userService;
 
-	//	public CountDownLatch getLatch() {
-	//		return latch;
-	//	}
 
 	@KafkaListener(topics = "${user.create.topic.name}")
 	public void consumeUserCreateEvent(String payload) {
 		User user = unMarshalToUserObject(payload);
 		userService.createUser(user);
-		System.out.println("in service with redis::"+userService.getUser(user.getUserId()));
 		createLatch.countDown();
 	}
 
@@ -96,10 +92,9 @@ public class UserEventListener {
 			follow = objectMapper.readValue(payload, Follow.class);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(" Error is:" + e.getStackTrace());
 		}
 		return follow;
 	}
 
 }
-*/
