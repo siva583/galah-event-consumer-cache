@@ -17,6 +17,12 @@ This project is using spring-boot so no need to install local application server
 
 Service is using redis as cache and Kafka as messaging system between UI and redis. So both should be installed in local machine and use below ports.
 
+```
+server.port=8091
+kafka.bootstrapAddress=localhost:9092
+zkServer=localhost:2181
+```
+
 ##### Redis Instructions:
 ```
 1. Download and install Redis.
