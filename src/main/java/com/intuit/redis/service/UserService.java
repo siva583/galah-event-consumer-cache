@@ -116,6 +116,7 @@ public class UserService {
 
 	public LinkedHashSet<Post> getUserTimeline(String userId, Integer pageSize, Integer pageNumber) {
 		long start = (pageNumber<=0) ? pageNumber=1: (pageNumber-1)*pageSize+1;
+		if(pageNumber<=0)pageNumber=0;
 		long end = start+pageSize-1;	
 		List<String> postIds = userListOps.range(Constants.TIMELINE_KEY+userId, start, end);
 		LinkedHashSet<Post> timelinePosts = new LinkedHashSet<Post>();
