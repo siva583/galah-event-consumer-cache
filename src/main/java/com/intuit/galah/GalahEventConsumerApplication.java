@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 
 //import com.intuit.galah.listener.PostEventListener;
 //import com.intuit.galah.listener.UserEventListener;
-import com.intuit.redis.service.PostService;
-import com.intuit.redis.service.UserService;
+import com.intuit.redis.service.PostServiceImpl;
+import com.intuit.redis.service.UserServiceImpl;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -30,13 +30,13 @@ public class GalahEventConsumerApplication {
 //	}
 	
 	@Bean
-	public UserService userService() {
-		return new UserService();
+	public UserServiceImpl userService() {
+		return new UserServiceImpl();
 	}
 	
 	@Bean
-	public PostService postService() {
-		return new PostService();
+	public PostServiceImpl postService() {
+		return new PostServiceImpl();
 	}
 	
 	

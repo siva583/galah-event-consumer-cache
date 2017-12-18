@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intuit.galah.iface.IUserService;
 import com.intuit.galah.model.Post;
 import com.intuit.galah.util.ServiceUtil;
-import com.intuit.redis.service.UserService;
 
 @RestController
 public class TimelineCacheController {
 	
 	@Autowired
-	UserService userService;
+	private IUserService userService;
 	
 	@Autowired
 	private ServiceUtil serviceUtil;

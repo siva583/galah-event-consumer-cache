@@ -15,12 +15,12 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import com.intuit.galah.constants.Constants;
-
+import com.intuit.galah.iface.IPostService;
 import com.intuit.galah.model.Post;
 import com.intuit.galah.model.User;
 
 @Service
-public class PostService {
+public class PostServiceImpl implements IPostService{
 
 	@Resource(name = "redisTemplate")
 	private HashOperations<String, String, Object> postHashOps;
@@ -32,7 +32,7 @@ public class PostService {
 	private ValueOperations<String, Long> idOps;
 
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
 
 	public Post createPost(Post post) {
 		post.setPostId(String.valueOf(createNewPostId()));

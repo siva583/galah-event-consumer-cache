@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intuit.galah.iface.IPostService;
+import com.intuit.galah.iface.IUserService;
 import com.intuit.galah.model.Post;
 import com.intuit.galah.util.ServiceUtil;
-import com.intuit.redis.service.PostService;
-import com.intuit.redis.service.UserService;
 
 @RestController
 public class PostCacheController {
 	
 	@Autowired
-	UserService userService;
+	private IUserService userService;
 	
 	@Autowired
-	PostService postService;
+	private IPostService postService;
 	
 	@Autowired
 	private ServiceUtil serviceUtil;

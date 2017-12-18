@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intuit.galah.iface.IUserService;
 import com.intuit.galah.model.User;
 import com.intuit.galah.util.ServiceUtil;
-import com.intuit.redis.service.UserService;
 
 @RestController
 public class UserCacheController {
 
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 	
 	@Autowired
 	private ServiceUtil serviceUtil;

@@ -16,11 +16,12 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import com.intuit.galah.constants.Constants;
+import com.intuit.galah.iface.IUserService;
 import com.intuit.galah.model.Post;
 import com.intuit.galah.model.User;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements IUserService{
 	
 	 @Autowired
 	 private RedisTemplate<String, Object> template;
